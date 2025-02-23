@@ -55,10 +55,10 @@ pub const Frame = struct {
         frame.type = @enumFromInt(try reader.readIntBig(u8));
         frame.flags = try reader.readIntBig(u8);
         frame.stream_id = @intCast(try reader.readIntBig(u32));
-        
+
         frame.payload = try allocator.alloc(u8, frame.length);
         _ = try reader.readAll(frame.payload);
-        
+
         return frame;
     }
 };

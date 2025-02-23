@@ -41,7 +41,7 @@ pub const Auth = struct {
         hash.update(header_b64);
         hash.update(".");
         hash.update(payload_b64);
-        
+
         var expected_signature: [crypto.hmac.sha256.mac_length]u8 = undefined;
         hash.final(&expected_signature);
 
@@ -52,7 +52,7 @@ pub const Auth = struct {
 
     pub fn generateToken(self: *Auth, subject: []const u8, expires_in: i64) ![]u8 {
         const now = std.time.timestamp();
-        
+
         const header = TokenHeader{
             .alg = "HS256",
             .typ = "JWT",

@@ -7,6 +7,11 @@ const auth = @import("features/auth.zig");
 const streaming = @import("features/streaming.zig");
 const health = @import("features/health.zig");
 
+pub const Handler = struct {
+    name: []const u8, // Name of the RPC method (e.g., "SayHello")
+    handler_fn: *const fn (request: []const u8, allocator: std.mem.Allocator) anyerror![]u8, // Function to handle the RPC request
+};
+
 pub const GrpcServer = struct {
     allocator: std.mem.Allocator,
     address: std.net.Address,
