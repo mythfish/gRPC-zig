@@ -43,7 +43,6 @@ pub const GrpcServer = struct {
     }
 
     pub fn start(self: *GrpcServer) !void {
-        try self.server.listen(self.address);
         try self.health_check.setStatus("grpc.health.v1.Health", .SERVING);
         std.log.info("Server listening on {}", .{self.address});
 
