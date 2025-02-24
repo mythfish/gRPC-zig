@@ -15,7 +15,7 @@ pub const Handler = struct {
 pub const GrpcServer = struct {
     allocator: std.mem.Allocator,
     address: std.net.Address,
-    server: std.net.StreamServer,
+    server: std.net.Server,
     handlers: std.ArrayList(Handler),
     compression: compression.Compression,
     auth: auth.Auth,
@@ -23,10 +23,12 @@ pub const GrpcServer = struct {
 
     pub fn init(allocator: std.mem.Allocator, port: u16, secret_key: []const u8) !GrpcServer {
         const address = try std.net.Address.parseIp("127.0.0.1", port);
+        const server = try address.listen(.{});
+
         return GrpcServer{
             .allocator = allocator,
             .address = address,
-            .server = std.net.StreamServer.init(.{}),
+            .server = server,
             .handlers = std.ArrayList(Handler).init(allocator),
             .compression = compression.Compression.init(allocator),
             .auth = auth.Auth.init(allocator, secret_key),
@@ -51,7 +53,7 @@ pub const GrpcServer = struct {
         }
     }
 
-    fn handleConnection(self: *GrpcServer, conn: std.net.StreamServer.Connection) !void {
+    fn handleConnection(self: *GrpcServer, conn: std.net.Server.Connection) !void {
         var trans = try transport.Transport.init(self.allocator, conn.stream);
         defer trans.deinit();
 
