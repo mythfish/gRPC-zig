@@ -51,10 +51,10 @@ pub const Frame = struct {
 
     pub fn decode(reader: anytype, allocator: std.mem.Allocator) !Frame {
         var frame = try Frame.init(allocator);
-        frame.length = try reader.readIntBig(u24);
-        frame.type = @enumFromInt(try reader.readIntBig(u8));
-        frame.flags = try reader.readIntBig(u8);
-        frame.stream_id = @intCast(try reader.readIntBig(u32));
+        frame.length = try reader.readInt(u24, .big);
+        frame.type = @enumFromInt(try reader.readInt(u8, .big));
+        frame.flags = try reader.readInt(u8, .big);
+        frame.stream_id = @intCast(try reader.readInt(u32, .big));
 
         frame.payload = try allocator.alloc(u8, frame.length);
         _ = try reader.readAll(frame.payload);
