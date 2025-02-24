@@ -25,7 +25,7 @@ pub const Frame = struct {
     type: FrameType,
     flags: u8,
     stream_id: u31,
-    payload: []const u8,
+    payload: []u8,
 
     pub fn init(allocator: std.mem.Allocator) !Frame {
         return Frame{
