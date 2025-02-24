@@ -42,10 +42,10 @@ pub const Frame = struct {
     }
 
     pub fn encode(self: Frame, writer: anytype) !void {
-        try writer.writeIntBig(u24, self.length);
-        try writer.writeIntBig(u8, @intFromEnum(self.type));
-        try writer.writeIntBig(u8, self.flags);
-        try writer.writeIntBig(u32, self.stream_id);
+        try writer.writeInt(u24, self.length, .big);
+        try writer.writeInt(u8, @intFromEnum(self.type), .big);
+        try writer.writeInt(u8, self.flags, .big);
+        try writer.writeInt(u32, self.stream_id, .big);
         try writer.writeAll(self.payload);
     }
 
