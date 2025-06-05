@@ -75,8 +75,8 @@ try stream.push("Final message", true);
 2. Add to your `build.zig`:
 
 ```zig
-const grpc_zig = b.dependency("grpc_zig", .{});
-exe.addModule("grpc", grpc_zig.module("grpc"));
+const grpc_zig = b.dependency("grpc_zig", .{ .target = target });
+exe_mod.addImport("grpc", grpc_zig.module("grpczig"));
 ```
 
 ## 🏃 Performance
